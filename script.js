@@ -133,3 +133,22 @@ function restartQuiz() {
 }
 
 startQuiz();
+
+let timeLeft = 60;
+let timer;
+
+function startTimer() {
+    timer = setInterval(function () {
+        timeLeft--;
+
+        document.getElementById("timer").innerText =
+            "நேரம்: " + timeLeft + " விநாடிகள்";
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            alert("நேரம் முடிந்துவிட்டது!");
+        }
+    }, 1000);
+}
+
+startTimer();
