@@ -1,7 +1,58 @@
-<DOCTYPE html>
-<html>
-  <head>
-    <h1> 10 - வகுப்பு தமிழ்</tittle>
-  </head>
-  <body>
-    <h2> முதல் இயல் வினாடிவினா </h1>
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>தமிழ் திறனறிவு தேர்வு</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+  <h1>தமிழ் திறனறிவு தேர்வு</h1>
+
+  <div id="studentBox">
+    <input type="text" id="studentName" placeholder="மாணவர் பெயர்">
+    <input type="text" id="studentClass" placeholder="வகுப்பு">
+    <button onclick="startQuiz()">தேர்வை தொடங்கு</button>
+  </div>
+
+  <div id="quizBox" style="display:none;">
+
+    <div class="top">
+      <span id="questionNumber"></span>
+      <span id="timer">நேரம்: 10:00</span>
+    </div>
+
+    <h2 id="question"></h2>
+
+    <div id="options"></div>
+
+    <button onclick="nextQuestion()" id="nextBtn">
+      அடுத்த வினா
+    </button>
+
+  </div>
+
+  <div id="resultBox" style="display:none;">
+    <h2>🎉 தேர்வு முடிந்தது!</h2>
+
+    <p id="studentResult"></p>
+    <h3 id="score"></h3>
+
+    <div id="wrongAnswers"></div>
+
+    <button onclick="location.reload()">
+      மீண்டும் தேர்வு எழுதுக
+    </button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
