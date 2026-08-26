@@ -1,3 +1,53 @@
+// ==========================================
+// தமிழ் வினாடி வினா
+// ==========================================
+
+const questions = [
+
+    {
+        question: "தமிழ் மொழியின் மிகப் பழமையான இலக்கண நூல் எது?",
+        options: [
+            "தொல்காப்பியம்",
+            "நன்னூல்",
+            "திருக்குறள்",
+            "சிலப்பதிகாரம்"
+        ],
+        answer: 0
+    },
+
+    {
+        question: "தமிழின் முதல் எழுத்து எது?",
+        options: [
+            "ஆ",
+            "இ",
+            "அ",
+            "உ"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "உயிரெழுத்துகளின் எண்ணிக்கை எத்தனை?",
+        options: [
+            "10",
+            "12",
+            "18",
+            "216"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "மெய்யெழுத்துகளின் எண்ணிக்கை எத்தனை?",
+        options: [
+            "12",
+            "18",
+            "216",
+            "247"
+        ],
+        answer: 1
+    },
+
     {
         question: "உயிர்மெய் எழுத்துகளின் எண்ணிக்கை எத்தனை?",
         options: [
@@ -40,22 +90,43 @@
             "150"
         ],
         answer: 2
+    },
+        {
+        question: "திருக்குறளில் எத்தனை பாகங்கள் உள்ளன?",
+        options: [
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "திருக்குறளின் ஆசிரியர் யார்?",
+        options: [
+            "கம்பர்",
+            "திருவள்ளுவர்",
+            "இளங்கோவடிகள்",
+            "சீத்தலைச் சாத்தனார்"
+        ],
+        answer: 1
     }
+
 ];
 
 
 // ==========================================
-// தேவையான HTML பகுதிகள்
+// HTML பகுதிகள்
 // ==========================================
 
-const quizForm = document.getElementById("quizForm");
 const quizContainer = document.getElementById("quiz");
 const submitButton = document.getElementById("submitBtn");
 const resultContainer = document.getElementById("result");
 
 
 // ==========================================
-// வினாக்களை திரையில் காட்டுதல்
+// வினாக்களை காட்டுதல்
 // ==========================================
 
 function loadQuiz() {
@@ -73,9 +144,9 @@ function loadQuiz() {
 
             ${q.options.map((option, optionIndex) => `
                 <label>
-                    <input 
-                        type="radio" 
-                        name="question${index}" 
+                    <input
+                        type="radio"
+                        name="question${index}"
                         value="${optionIndex}"
                     >
                     ${option}
@@ -86,16 +157,13 @@ function loadQuiz() {
         quizContainer.appendChild(questionDiv);
     });
 }
-
-
-// ==========================================
+    // ==========================================
 // தேர்வு முடிவு
 // ==========================================
 
 function calculateResult() {
 
     let score = 0;
-
     let wrongAnswers = [];
 
     questions.forEach((q, index) => {
@@ -117,8 +185,8 @@ function calculateResult() {
                 wrongAnswers.push({
                     number: index + 1,
                     question: q.question,
-                    correct: q.options[q.answer],
-                    selected: q.options[selectedAnswer]
+                    selected: q.options[selectedAnswer],
+                    correct: q.options[q.answer]
                 });
 
             }
@@ -128,32 +196,34 @@ function calculateResult() {
             wrongAnswers.push({
                 number: index + 1,
                 question: q.question,
-                correct: q.options[q.answer],
-                selected: "விடை தேர்வு செய்யவில்லை"
+                selected: "விடை தேர்வு செய்யவில்லை",
+                correct: q.options[q.answer]
             });
-
         }
     });
 
 
-    // ======================================
-    // மாணவர் பெயர் மற்றும் வகுப்பு
-    // ======================================
+    // மாணவர் பெயர்
 
     const studentName =
-        document.getElementById("studentName")?.value || "மாணவர்";
+        document.getElementById("studentName").value || "மாணவர்";
+
+
+    // வகுப்பு
 
     const studentClass =
-        document.getElementById("studentClass")?.value || "-";
+        document.getElementById("studentClass").value || "-";
 
 
-    // ======================================
-    // Score
-    // ======================================
+    // சதவீதம்
 
-    let percentage = (score / questions.length) * 100;
+    const percentage =
+        Math.round((score / questions.length) * 100);
 
-    let message = "";
+
+    // பாராட்டு செய்தி
+
+    let message;
 
     if (score >= 9) {
 
@@ -165,18 +235,15 @@ function calculateResult() {
 
     } else if (score >= 5) {
 
-        message = "👍 நன்று! இன்னும் சிறப்பாக முயற்சி செய்யுங்கள்.";
+        message = "👍 நன்று!";
 
     } else {
 
-        message = "📚 மேலும் பயிற்சி செய்யுங்கள். நீங்கள் நிச்சயம் வெற்றி பெறுவீர்கள்!";
-
+        message = "📚 மேலும் பயிற்சி செய்யுங்கள்!";
     }
 
 
-    // ======================================
-    // Result HTML
-    // ======================================
+    // Result
 
     let resultHTML = `
 
@@ -184,15 +251,26 @@ function calculateResult() {
 
             <h2>🎓 தமிழ் வினாடி வினா - முடிவு</h2>
 
-            <p><strong>மாணவர் பெயர்:</strong> ${studentName}</p>
+            <p>
+                <strong>மாணவர் பெயர்:</strong>
+                ${studentName}
+            </p>
 
-            <p><strong>வகுப்பு:</strong> ${studentClass}</p>
+            <p>
+                <strong>வகுப்பு:</strong>
+                ${studentClass}
+            </p>
 
             <hr>
 
-            <h2>🏆 மதிப்பெண்: ${score} / ${questions.length}</h2>
+            <h2>
+                🏆 மதிப்பெண்:
+                ${score} / ${questions.length}
+            </h2>
 
-            <h3>📊 சதவீதம்: ${percentage}%</h3>
+            <h3>
+                📊 சதவீதம்: ${percentage}%
+            </h3>
 
             <h3>${message}</h3>
 
@@ -200,18 +278,14 @@ function calculateResult() {
     `;
 
 
-    // ======================================
     // தவறான விடைகள்
-    // ======================================
 
     if (wrongAnswers.length > 0) {
 
         resultHTML += `
-
             <div class="wrong-answers">
 
                 <h2>❌ தவறான விடைகள்</h2>
-
         `;
 
         wrongAnswers.forEach(item => {
@@ -221,23 +295,24 @@ function calculateResult() {
                 <div class="wrong-question">
 
                     <p>
-                        <strong>${item.number}. ${item.question}</strong>
+                        <strong>
+                            ${item.number}. ${item.question}
+                        </strong>
                     </p>
 
                     <p>
                         உங்கள் விடை:
-                        <span>${item.selected}</span>
+                        ❌ ${item.selected}
                     </p>
 
                     <p>
-                        ✅ சரியான விடை:
-                        <strong>${item.correct}</strong>
+                        சரியான விடை:
+                        ✅ <strong>${item.correct}</strong>
                     </p>
 
                 </div>
 
             `;
-
         });
 
         resultHTML += `</div>`;
@@ -248,15 +323,16 @@ function calculateResult() {
 
             <div class="perfect">
 
-                🎉🎉 அற்புதம்! அனைத்து வினாக்களுக்கும்
-                சரியான விடை அளித்துள்ளீர்கள்!
+                🎉🎉 அற்புதம்!
+                அனைத்து வினாக்களுக்கும்
+                சரியான விடை!
 
             </div>
-
         `;
-
     }
 
+
+    // Result-ஐ காட்டுதல்
 
     resultContainer.innerHTML = resultHTML;
 
@@ -265,6 +341,9 @@ function calculateResult() {
     resultContainer.scrollIntoView({
         behavior: "smooth"
     });
+
+
+    // Submit button-ஐ நிறுத்துதல்
 
     submitButton.disabled = true;
 
@@ -276,37 +355,30 @@ function calculateResult() {
 // Submit Button
 // ==========================================
 
-if (submitButton) {
+submitButton.addEventListener("click", function(event) {
 
-    submitButton.addEventListener("click", function(event) {
+    event.preventDefault();
 
-        event.preventDefault();
+    calculateResult();
 
-        calculateResult();
-
-    });
-
-}
-
-
+});
 // ==========================================
 // TIMER - 10 நிமிடங்கள்
 // ==========================================
 
 let timeLeft = 10 * 60;
-
 let timerInterval;
-
 
 function startTimer() {
 
     timerInterval = setInterval(function() {
 
         let minutes = Math.floor(timeLeft / 60);
-
         let seconds = timeLeft % 60;
 
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
 
         const timerElement =
             document.getElementById("timer");
@@ -315,11 +387,8 @@ function startTimer() {
 
             timerElement.innerHTML =
                 `⏱️ மீதமுள்ள நேரம்: ${minutes}:${seconds}`;
-
         }
 
-
-        // நேரம் முடிந்தால்
         if (timeLeft <= 0) {
 
             clearInterval(timerInterval);
@@ -328,12 +397,12 @@ function startTimer() {
 
             calculateResult();
 
+            return;
         }
 
         timeLeft--;
 
     }, 1000);
-
 }
 
 
@@ -345,9 +414,8 @@ function stopTimer() {
 
 
 // ==========================================
-// Quiz ஆரம்பிக்கும்போது
+// Quiz ஆரம்பம்
 // ==========================================
 
 loadQuiz();
-
 startTimer();
