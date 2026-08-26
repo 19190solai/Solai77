@@ -2,18 +2,28 @@
 // தமிழ் வினாடி வினா - script.js
 // ==========================================
 
-// வினாக்கள்
+// 10 வினாக்கள்
 const questions = [
-
     {
         question: "தமிழ் மொழியின் மிகப் பழமையான இலக்கண நூல் எது?",
         options: [
-            "தொல்காப்பியம்",
             "நன்னூல்",
+            "தொல்காப்பியம்",
             "திருக்குறள்",
             "சிலப்பதிகாரம்"
         ],
-        answer: 0
+        answer: 1
+    },
+
+    {
+        question: "தொல்காப்பியத்தின் ஆசிரியர் யார்?",
+        options: [
+            "திருவள்ளுவர்",
+            "இளங்கோவடிகள்",
+            "தொல்காப்பியர்",
+            "கம்பர்"
+        ],
+        answer: 2
     },
 
     {
@@ -21,63 +31,8 @@ const questions = [
         options: [
             "கம்பர்",
             "திருவள்ளுவர்",
-            "இளங்கோவடிகள்",
-            "சீத்தலைச் சாத்தனார்"
-        ],
-        answer: 1
-    },
-
-    {
-        question: "தமிழின் ஐம்பெரும் காப்பியங்களில் ஒன்று எது?",
-        options: [
-            "திருக்குறள்",
-            "நாலடியார்",
-            "சிலப்பதிகாரம்",
-            "ஆத்திசூடி"
-        ],
-        answer: 2
-    },
-
-    {
-        question: "சிலப்பதிகாரத்தை இயற்றியவர் யார்?",
-        options: [
-            "இளங்கோவடிகள்",
-            "கம்பர்",
-            "சேக்கிழார்",
-            "திருவள்ளுவர்"
-        ],
-        answer: 0
-    },
-
-    {
-        question: "கம்பரால் இயற்றப்பட்ட காப்பியம் எது?",
-        options: [
-            "மணிமேகலை",
-            "கம்பராமாயணம்",
-            "பெரியபுராணம்",
-            "சீவகசிந்தாமணி"
-        ],
-        answer: 1
-    },
-
-    {
-        question: "தமிழில் 'அறம்' பற்றிக் கூறும் சிறந்த நூல் எது?",
-        options: [
-            "திருக்குறள்",
-            "கலித்தொகை",
-            "பட்டினப்பாலை",
-            "முல்லைப்பாட்டு"
-        ],
-        answer: 0
-    },
-
-    {
-        question: "தொல்காப்பியம் எத்தனை அதிகாரங்களைக் கொண்டது?",
-        options: [
-            "2",
-            "3",
-            "4",
-            "5"
+            "பாரதியார்",
+            "அவ்வையார்"
         ],
         answer: 1
     },
@@ -85,16 +40,16 @@ const questions = [
     {
         question: "தமிழின் முதல் எழுத்து எது?",
         options: [
-            "அ",
             "ஆ",
             "இ",
+            "அ",
             "உ"
         ],
-        answer: 0
+        answer: 2
     },
 
     {
-        question: "தமிழில் உயிரெழுத்துகள் எத்தனை?",
+        question: "உயிரெழுத்துகளின் எண்ணிக்கை எத்தனை?",
         options: [
             "10",
             "12",
@@ -105,7 +60,7 @@ const questions = [
     },
 
     {
-        question: "தமிழில் மெய்யெழுத்துகள் எத்தனை?",
+        question: "மெய்யெழுத்துகளின் எண்ணிக்கை எத்தனை?",
         options: [
             "12",
             "18",
@@ -113,255 +68,358 @@ const questions = [
             "247"
         ],
         answer: 1
-    }
+    },
 
+    {
+        question: "உயிர்மெய் எழுத்துகளின் எண்ணிக்கை எத்தனை?",
+        options: [
+            "18",
+            "12",
+            "216",
+            "247"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "தமிழ் எழுத்துகளின் மொத்த எண்ணிக்கை எத்தனை?",
+        options: [
+            "216",
+            "247",
+            "133",
+            "18"
+        ],
+        answer: 1
+    },
+
+    {
+        question: "திருக்குறளில் மொத்தம் எத்தனை குறள்கள் உள்ளன?",
+        options: [
+            "1000",
+            "1200",
+            "1330",
+            "1500"
+        ],
+        answer: 2
+    },
+
+    {
+        question: "திருக்குறளில் எத்தனை அதிகாரங்கள் உள்ளன?",
+        options: [
+            "108",
+            "120",
+            "133",
+            "150"
+        ],
+        answer: 2
+    }
 ];
 
 
 // ==========================================
-// மாறிகள்
+// தேவையான HTML பகுதிகள்
 // ==========================================
 
-let currentQuestion = 0;
-let score = 0;
-let selectedAnswer = null;
-let timeLeft = 60;
-let timer;
-
-
-// ==========================================
-// HTML பகுதிகளைப் பெறுதல்
-// ==========================================
-
-const questionElement = document.getElementById("question");
-const optionsElement = document.getElementById("options");
-const nextButton = document.getElementById("next-btn");
-const resultElement = document.getElementById("result");
-const timerElement = document.getElementById("timer");
+const quizForm = document.getElementById("quizForm");
+const quizContainer = document.getElementById("quiz");
+const submitButton = document.getElementById("submitBtn");
+const resultContainer = document.getElementById("result");
 
 
 // ==========================================
-// வினாவைக் காட்டுதல்
+// வினாக்களை திரையில் காட்டுதல்
 // ==========================================
 
-function showQuestion() {
+function loadQuiz() {
 
-    selectedAnswer = null;
+    quizContainer.innerHTML = "";
 
-    const q = questions[currentQuestion];
+    questions.forEach((q, index) => {
 
-    questionElement.textContent =
-        (currentQuestion + 1) + ". " + q.question;
+        const questionDiv = document.createElement("div");
 
-    optionsElement.innerHTML = "";
+        questionDiv.className = "question";
 
-    q.options.forEach((option, index) => {
+        questionDiv.innerHTML = `
+            <h3>${index + 1}. ${q.question}</h3>
 
-        const button = document.createElement("button");
+            ${q.options.map((option, optionIndex) => `
+                <label>
+                    <input 
+                        type="radio" 
+                        name="question${index}" 
+                        value="${optionIndex}"
+                    >
+                    ${option}
+                </label>
+            `).join("")}
+        `;
 
-        button.textContent =
-            String.fromCharCode(65 + index) + ") " + option;
-
-        button.className = "option";
-
-        button.onclick = function () {
-            selectAnswer(index, button);
-        };
-
-        optionsElement.appendChild(button);
-
+        quizContainer.appendChild(questionDiv);
     });
-
-    nextButton.style.display = "none";
-
-    startTimer();
 }
 
 
 // ==========================================
-// விடையைத் தேர்வு செய்தல்
+// தேர்வு முடிவு
 // ==========================================
 
-function selectAnswer(index, button) {
+function calculateResult() {
 
-    if (selectedAnswer !== null) {
-        return;
-    }
+    let score = 0;
 
-    selectedAnswer = index;
+    let wrongAnswers = [];
 
-    const correctAnswer = questions[currentQuestion].answer;
+    questions.forEach((q, index) => {
 
-    const allButtons =
-        optionsElement.querySelectorAll(".option");
+        const selected = document.querySelector(
+            `input[name="question${index}"]:checked`
+        );
 
-    allButtons.forEach(btn => {
-        btn.disabled = true;
-    });
+        if (selected) {
 
-    // சரியான விடை
-    if (index === correctAnswer) {
+            const selectedAnswer = Number(selected.value);
 
-        score++;
+            if (selectedAnswer === q.answer) {
 
-        button.classList.add("correct");
+                score++;
 
-    } else {
+            } else {
 
-        // தவறான விடை
-        button.classList.add("wrong");
-
-        // சரியான விடையை காட்டுதல்
-        allButtons[correctAnswer].classList.add("correct");
-
-    }
-
-    clearInterval(timer);
-
-    nextButton.style.display = "block";
-
-    if (currentQuestion === questions.length - 1) {
-        nextButton.textContent = "முடிவைக் காண்க";
-    } else {
-        nextButton.textContent = "அடுத்த வினா";
-    }
-
-}
-
-
-// ==========================================
-// அடுத்த வினா
-// ==========================================
-
-nextButton.onclick = function () {
-
-    currentQuestion++;
-
-    if (currentQuestion < questions.length) {
-
-        showQuestion();
-
-    } else {
-
-        showResult();
-
-    }
-
-};
-
-
-// ==========================================
-// Timer
-// ==========================================
-
-function startTimer() {
-
-    clearInterval(timer);
-
-    timeLeft = 60;
-
-    updateTimer();
-
-    timer = setInterval(function () {
-
-        timeLeft--;
-
-        updateTimer();
-
-        if (timeLeft <= 0) {
-
-            clearInterval(timer);
-
-            // விடை தேர்வு செய்யாமல் நேரம் முடிந்தால்
-            if (selectedAnswer === null) {
-
-                const correctAnswer =
-                    questions[currentQuestion].answer;
-
-                const allButtons =
-                    optionsElement.querySelectorAll(".option");
-
-                allButtons.forEach(btn => {
-                    btn.disabled = true;
+                wrongAnswers.push({
+                    number: index + 1,
+                    question: q.question,
+                    correct: q.options[q.answer],
+                    selected: q.options[selectedAnswer]
                 });
-
-                allButtons[correctAnswer].classList.add("correct");
-
-                selectedAnswer = -1;
-
-                nextButton.style.display = "block";
-
-                if (currentQuestion === questions.length - 1) {
-                    nextButton.textContent = "முடிவைக் காண்க";
-                } else {
-                    nextButton.textContent = "அடுத்த வினா";
-                }
 
             }
 
+        } else {
+
+            wrongAnswers.push({
+                number: index + 1,
+                question: q.question,
+                correct: q.options[q.answer],
+                selected: "விடை தேர்வு செய்யவில்லை"
+            });
+
         }
+    });
+
+
+    // ======================================
+    // மாணவர் பெயர் மற்றும் வகுப்பு
+    // ======================================
+
+    const studentName =
+        document.getElementById("studentName")?.value || "மாணவர்";
+
+    const studentClass =
+        document.getElementById("studentClass")?.value || "-";
+
+
+    // ======================================
+    // Score
+    // ======================================
+
+    let percentage = (score / questions.length) * 100;
+
+    let message = "";
+
+    if (score >= 9) {
+
+        message = "🎉 மிகச் சிறப்பு!";
+
+    } else if (score >= 7) {
+
+        message = "👏 மிகவும் நன்று!";
+
+    } else if (score >= 5) {
+
+        message = "👍 நன்று! இன்னும் சிறப்பாக முயற்சி செய்யுங்கள்.";
+
+    } else {
+
+        message = "📚 மேலும் பயிற்சி செய்யுங்கள். நீங்கள் நிச்சயம் வெற்றி பெறுவீர்கள்!";
+
+    }
+
+
+    // ======================================
+    // Result HTML
+    // ======================================
+
+    let resultHTML = `
+
+        <div class="result-box">
+
+            <h2>🎓 தமிழ் வினாடி வினா - முடிவு</h2>
+
+            <p><strong>மாணவர் பெயர்:</strong> ${studentName}</p>
+
+            <p><strong>வகுப்பு:</strong> ${studentClass}</p>
+
+            <hr>
+
+            <h2>🏆 மதிப்பெண்: ${score} / ${questions.length}</h2>
+
+            <h3>📊 சதவீதம்: ${percentage}%</h3>
+
+            <h3>${message}</h3>
+
+        </div>
+    `;
+
+
+    // ======================================
+    // தவறான விடைகள்
+    // ======================================
+
+    if (wrongAnswers.length > 0) {
+
+        resultHTML += `
+
+            <div class="wrong-answers">
+
+                <h2>❌ தவறான விடைகள்</h2>
+
+        `;
+
+        wrongAnswers.forEach(item => {
+
+            resultHTML += `
+
+                <div class="wrong-question">
+
+                    <p>
+                        <strong>${item.number}. ${item.question}</strong>
+                    </p>
+
+                    <p>
+                        உங்கள் விடை:
+                        <span>${item.selected}</span>
+                    </p>
+
+                    <p>
+                        ✅ சரியான விடை:
+                        <strong>${item.correct}</strong>
+                    </p>
+
+                </div>
+
+            `;
+
+        });
+
+        resultHTML += `</div>`;
+
+    } else {
+
+        resultHTML += `
+
+            <div class="perfect">
+
+                🎉🎉 அற்புதம்! அனைத்து வினாக்களுக்கும்
+                சரியான விடை அளித்துள்ளீர்கள்!
+
+            </div>
+
+        `;
+
+    }
+
+
+    resultContainer.innerHTML = resultHTML;
+
+    resultContainer.style.display = "block";
+
+    resultContainer.scrollIntoView({
+        behavior: "smooth"
+    });
+
+    submitButton.disabled = true;
+
+    stopTimer();
+}
+
+
+// ==========================================
+// Submit Button
+// ==========================================
+
+if (submitButton) {
+
+    submitButton.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        calculateResult();
+
+    });
+
+}
+
+
+// ==========================================
+// TIMER - 10 நிமிடங்கள்
+// ==========================================
+
+let timeLeft = 10 * 60;
+
+let timerInterval;
+
+
+function startTimer() {
+
+    timerInterval = setInterval(function() {
+
+        let minutes = Math.floor(timeLeft / 60);
+
+        let seconds = timeLeft % 60;
+
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        const timerElement =
+            document.getElementById("timer");
+
+        if (timerElement) {
+
+            timerElement.innerHTML =
+                `⏱️ மீதமுள்ள நேரம்: ${minutes}:${seconds}`;
+
+        }
+
+
+        // நேரம் முடிந்தால்
+        if (timeLeft <= 0) {
+
+            clearInterval(timerInterval);
+
+            alert("⏰ நேரம் முடிந்துவிட்டது!");
+
+            calculateResult();
+
+        }
+
+        timeLeft--;
 
     }, 1000);
 
 }
 
 
-// ==========================================
-// Timer-ஐக் காட்டுதல்
-// ==========================================
+function stopTimer() {
 
-function updateTimer() {
-
-    if (timerElement) {
-
-        timerElement.textContent =
-            "நேரம்: " + timeLeft + " விநாடிகள்";
-
-    }
+    clearInterval(timerInterval);
 
 }
 
 
 // ==========================================
-// இறுதி முடிவு
+// Quiz ஆரம்பிக்கும்போது
 // ==========================================
 
-function showResult() {
+loadQuiz();
 
-    clearInterval(timer);
-
-    questionElement.style.display = "none";
-    optionsElement.style.display = "none";
-    nextButton.style.display = "none";
-
-    if (timerElement) {
-        timerElement.style.display = "none";
-    }
-
-    resultElement.style.display = "block";
-
-    const percentage =
-        Math.round((score / questions.length) * 100);
-
-    resultElement.innerHTML =
-
-        "<h2>🎉 தேர்வு முடிந்தது!</h2>" +
-
-        "<h3>உங்கள் மதிப்பெண்</h3>" +
-
-        "<p>" +
-        score + " / " + questions.length +
-        "</p>" +
-
-        "<p>" +
-        "சதவீதம்: " + percentage + "%" +
-        "</p>";
-
-}
-
-
-// ==========================================
-// தேர்வைத் தொடங்குதல்
-// ==========================================
-
-showQuestion();
+startTimer();
