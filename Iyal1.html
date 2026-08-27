@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>10ஆம் வகுப்பு தமிழ் - முதல் இயல்</title>
+
+    <link rel="stylesheet" href="iyal1.css">
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <h1>📚 10ஆம் வகுப்பு தமிழ்</h1>
+    <h2>முதல் இயல் – வினாடிவினா</h2>
+
+    <!-- மாணவர் விவரம் -->
+    <div class="student-info">
+        <input type="text" id="studentName" placeholder="மாணவர் பெயர்">
+        <input type="text" id="studentClass" placeholder="வகுப்பு">
+    </div>
+
+    <!-- Timer -->
+    <div class="timer">
+        ⏱️ மீதமுள்ள நேரம்:
+        <span id="timer">05:00</span>
+    </div>
+
+    <!-- Questions -->
+    <div id="quiz"></div>
+
+    <!-- Submit -->
+    <button id="submitBtn" onclick="submitQuiz()">
+        ✅ விடைகளைச் சமர்ப்பிக்கவும்
+    </button>
+
+    <!-- Result -->
+    <div id="result"></div>
+
+</div>
+
+<script src="iyal1.js"></script>
+
+</body>
+</html>
