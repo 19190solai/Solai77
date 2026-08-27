@@ -124,6 +124,7 @@ const questions = [
         ],
         answer: 0
     }
+
 ];
 
 
@@ -144,7 +145,61 @@ const result = document.getElementById("result");
 
 
 // ==========================================
-// ஒரு வினாவை மட்டும் காட்டுதல்
+// சேமிப்பு Key
+// ==========================================
+
+const STORAGE_KEY = "iyal1_quiz_answers";
+
+
+// ==========================================
+// விடைகளை சேமிக்கும் Object
+// ==========================================
+
+let userAnswers =
+    JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+
+// ==========================================
+// HTML பாதுகாப்பு
+// ==========================================
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// ==========================================
+// விடையை சேமித்தல்
+// ==========================================
+
+function saveCurrentAnswer() {
+
+    const selected = document.querySelector(
+        'input[name="currentQuestion"]:checked'
+    );
+
+    if (!selected) {
+        return;
+    }
+
+    userAnswers[currentQuestion] =
+        Number(selected.value);
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(userAnswers)
+    );
+}
+
+
+// ==========================================
+// ஒரு வினாவை காட்டுதல்
 // ==========================================
 
 function showQuestion() {
@@ -162,24 +217,34 @@ function showQuestion() {
         <div class="question-box">
 
             <div class="question-type">
-                ${q.type}
+                ${escapeHTML(q.type)}
             </div>
 
             <div class="question">
-                ${currentQuestion + 1}. ${q.question}
+                ${currentQuestion + 1}. ${escapeHTML(q.question)}
             </div>
     `;
 
     q.options.forEach((option, optionIndex) => {
 
+        const checked =
+            userAnswers[currentQuestion] === optionIndex
+                ? "checked"
+                : "";
+
         html += `
             <label class="option">
+
                 <input
                     type="radio"
                     name="currentQuestion"
                     value="${optionIndex}"
+                    ${checked}
                 >
-                ${String.fromCharCode(65 + optionIndex)}) ${option}
+
+                ${String.fromCharCode(65 + optionIndex)})
+                ${escapeHTML(option)}
+
             </label>
         `;
 
@@ -190,7 +255,10 @@ function showQuestion() {
     quizContainer.innerHTML = html;
 
 
-    // கடைசி வினாவா?
+    // ==========================================
+    // கடைசி வினா
+    // ==========================================
+
     if (currentQuestion === questions.length - 1) {
 
         nextBtn.style.display = "none";
@@ -226,19 +294,24 @@ function nextQuestion() {
         return;
     }
 
-    currentQuestion++;
+    saveCurrentAnswer();
 
-    showQuestion();
+    if (currentQuestion < questions.length - 1) {
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+        currentQuestion++;
+
+        showQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
 }
 
 
 // ==========================================
-// TIMER - 5 நிமிடங்கள்
+// TIMER
 // ==========================================
 
 function updateTimer() {
@@ -247,14 +320,18 @@ function updateTimer() {
         return;
     }
 
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+    const minutes =
+        Math.floor(timeLeft / 60);
+
+    const seconds =
+        timeLeft % 60;
 
     timerElement.textContent =
         "⏱️ " +
         String(minutes).padStart(2, "0") +
         ":" +
         String(seconds).padStart(2, "0");
+
 
     if (timeLeft <= 0) {
 
@@ -270,26 +347,12 @@ function updateTimer() {
     timeLeft--;
 }
 
+
 const timer = setInterval(updateTimer, 1000);
 
 
 // ==========================================
-// HTML பாதுகாப்பு
-// ==========================================
-
-function escapeHTML(text) {
-
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-// ==========================================
-// தேர்வை முடித்தல்
+// தேர்வு முடித்தல்
 // ==========================================
 
 function submitQuiz() {
@@ -298,16 +361,16 @@ function submitQuiz() {
         return;
     }
 
-    // தற்போதைய வினாவின் விடையை சேமித்தல்
-    const selected = document.querySelector(
-        'input[name="currentQuestion"]:checked'
-    );
 
-    if (selected) {
-        // கடைசி வினாவின் விடை DOM-ல் இருக்கிறது.
-        // மற்ற வினாக்களின் விடைகள் localStorage-ல் சேமிக்கப்படும்.
-        saveCurrentAnswer();
-    } else if (currentQuestion === questions.length - 1) {
+    // தற்போதைய வினாவின் விடையை சேமிக்கவும்
+    saveCurrentAnswer();
+
+
+    // கடைசி வினாவில் விடை இல்லையெனில் எச்சரிக்கை
+    if (
+        currentQuestion === questions.length - 1 &&
+        userAnswers[currentQuestion] === undefined
+    ) {
 
         alert("⚠️ கடைசி வினாவிற்கும் விடையைத் தேர்ந்தெடுக்கவும்!");
 
@@ -321,43 +384,43 @@ function submitQuiz() {
 
 
     // ==========================================
-    // மதிப்பெண் கணக்கிடுதல்
+    // Score
     // ==========================================
 
     let score = 0;
+
     let wrongAnswers = [];
+
 
     questions.forEach((q, index) => {
 
-        const savedAnswer =
-            localStorage.getItem("iyal1_answer_" + index);
+        const selectedAnswer =
+            userAnswers[index];
 
-        if (savedAnswer !== null) {
 
-            const selectedAnswer = Number(savedAnswer);
+        if (
+            selectedAnswer !== undefined &&
+            selectedAnswer === q.answer
+        ) {
 
-            if (selectedAnswer === q.answer) {
-
-                score++;
-
-            } else {
-
-                wrongAnswers.push({
-                    number: index + 1,
-                    question: q.question,
-                    yourAnswer: q.options[selectedAnswer],
-                    correctAnswer: q.options[q.answer]
-                });
-
-            }
+            score++;
 
         } else {
 
             wrongAnswers.push({
+
                 number: index + 1,
+
                 question: q.question,
-                yourAnswer: "விடை தேர்ந்தெடுக்கவில்லை",
-                correctAnswer: q.options[q.answer]
+
+                yourAnswer:
+                    selectedAnswer !== undefined
+                        ? q.options[selectedAnswer]
+                        : "விடை தேர்ந்தெடுக்கவில்லை",
+
+                correctAnswer:
+                    q.options[q.answer]
+
             });
 
         }
@@ -369,11 +432,23 @@ function submitQuiz() {
     // மாணவர் தகவல்
     // ==========================================
 
+    const studentNameElement =
+        document.getElementById("studentName");
+
+    const studentClassElement =
+        document.getElementById("studentClass");
+
+
     const studentName =
-        document.getElementById("studentName").value.trim();
+        studentNameElement
+            ? studentNameElement.value.trim()
+            : "";
+
 
     const studentClass =
-        document.getElementById("studentClass").value.trim();
+        studentClassElement
+            ? studentClassElement.value.trim()
+            : "";
 
 
     // ==========================================
@@ -381,74 +456,97 @@ function submitQuiz() {
     // ==========================================
 
     let resultHTML = `
+
         <div class="result-box">
 
             <h2>🎉 தேர்வு முடிவு</h2>
 
             <div class="score">
-                உங்கள் மதிப்பெண்: ${score} / ${questions.length}
+                உங்கள் மதிப்பெண்:
+                ${score} / ${questions.length}
             </div>
+
     `;
 
 
     if (studentName !== "") {
 
         resultHTML += `
+
             <p>
                 <strong>மாணவர் பெயர்:</strong>
                 ${escapeHTML(studentName)}
             </p>
-        `;
 
+        `;
     }
 
 
     if (studentClass !== "") {
 
         resultHTML += `
+
             <p>
                 <strong>வகுப்பு:</strong>
                 ${escapeHTML(studentClass)}
             </p>
-        `;
 
+        `;
     }
 
 
     // ==========================================
-    // தவறான விடைகள்
+    // அனைத்து விடைகளும் சரி
     // ==========================================
 
     if (wrongAnswers.length === 0) {
 
         resultHTML += `
+
             <div class="correct-answer">
-                🌟 அருமை! அனைத்து வினாக்களுக்கும்
+
+                🌟 அருமை!
+
+                <br>
+
+                அனைத்து வினாக்களுக்கும்
                 சரியான விடை அளித்துள்ளீர்கள்!
+
             </div>
+
         `;
 
     } else {
 
+
+        // ======================================
+        // தவறான விடைகள்
+        // ======================================
+
         resultHTML += `
+
             <h3 style="margin-top:20px;">
                 ❌ தவறான / விடையளிக்காத வினாக்கள்
             </h3>
+
         `;
 
 
         wrongAnswers.forEach(item => {
 
             resultHTML += `
+
                 <div class="wrong-answer">
 
                     <strong>
-                        ${item.number}. ${escapeHTML(item.question)}
+                        ${item.number}.
+                        ${escapeHTML(item.question)}
                     </strong>
 
                     <br><br>
 
                     உங்கள் விடை:
+
                     <span>
                         ${escapeHTML(item.yourAnswer)}
                     </span>
@@ -456,11 +554,15 @@ function submitQuiz() {
                     <br><br>
 
                     <span class="correct-answer">
+
                         ✅ சரியான விடை:
+
                         ${escapeHTML(item.correctAnswer)}
+
                     </span>
 
                 </div>
+
             `;
 
         });
@@ -468,41 +570,48 @@ function submitQuiz() {
     }
 
 
-    resultHTML += `
-        </div>
-    `;
+    resultHTML += `</div>`;
 
+
+    // ==========================================
+    // Result காட்டுதல்
+    // ==========================================
 
     result.innerHTML = resultHTML;
 
 
     // ==========================================
-    // பொத்தான்களை முடக்குதல்
-    // ==========================================
-
-    nextBtn.disabled = true;
-    submitBtn.disabled = true;
-
-    nextBtn.style.display = "none";
-    submitBtn.style.display = "none";
-
-
-    // ==========================================
-    // Quiz பகுதியை மறைத்தல்
+    // Quiz மறைத்தல்
     // ==========================================
 
     quizContainer.style.display = "none";
 
 
     // ==========================================
-    // சேமித்த விடைகளை நீக்குதல்
+    // Buttons மறைத்தல்
     // ==========================================
 
-    questions.forEach((q, index) => {
+    nextBtn.disabled = true;
 
-        localStorage.removeItem("iyal1_answer_" + index);
+    submitBtn.disabled = true;
 
-    });
+    nextBtn.style.display = "none";
+
+    submitBtn.style.display = "none";
+
+
+    // ==========================================
+    // Timer நிறுத்துதல்
+    // ==========================================
+
+    timerElement.textContent = "⏰ தேர்வு முடிந்தது";
+
+
+    // ==========================================
+    // பழைய விடைகளை நீக்குதல்
+    // ==========================================
+
+    localStorage.removeItem(STORAGE_KEY);
 
 
     // ==========================================
@@ -516,28 +625,6 @@ function submitQuiz() {
         });
 
     }, 200);
-
-}
-
-
-// ==========================================
-// தற்போதைய விடையை சேமித்தல்
-// ==========================================
-
-function saveCurrentAnswer() {
-
-    const selected = document.querySelector(
-        'input[name="currentQuestion"]:checked'
-    );
-
-    if (!selected) {
-        return;
-    }
-
-    localStorage.setItem(
-        "iyal1_answer_" + currentQuestion,
-        selected.value
-    );
 }
 
 
@@ -561,17 +648,6 @@ document.addEventListener("change", function(event) {
 
 
 // ==========================================
-// தேர்வு தொடங்கும்போது பழைய விடைகளை நீக்குதல்
-// ==========================================
-
-questions.forEach((q, index) => {
-
-    localStorage.removeItem("iyal1_answer_" + index);
-
-});
-
-
-// ==========================================
 // முதல் வினாவை காட்டுதல்
 // ==========================================
 
@@ -579,7 +655,13 @@ showQuestion();
 
 
 // ==========================================
-// ஆரம்ப Timer
+// Timer ஆரம்பித்தல்
 // ==========================================
 
 updateTimer();
+
+
+    
+    
+
+        
