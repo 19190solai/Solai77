@@ -113,7 +113,17 @@ button:hover {
 .option input {
     margin-right: 8px;
 }
-
+.option {
+    display: block;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
 #result {
     margin-top: 25px;
     padding: 20px;
