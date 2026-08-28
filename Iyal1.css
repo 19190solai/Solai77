@@ -217,3 +217,49 @@ h2 {
         font-size: 16px;
     }
 }
+/* கேள்வி */
+.question {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Options */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.options label {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f8f8f8;
+    cursor: pointer;
+}
+
+/* Radio button + option text */
+.options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+/* மொபைல் */
+@media (max-width: 600px) {
+    .question {
+        font-size: 20px;
+    }
+
+    .options label {
+        font-size: 18px;
+        padding: 13px 14px;
+    }
+}
